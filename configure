@@ -4581,6 +4581,10 @@ else
 fi
 
 ##########################################
+# libchdr includes
+QEMU_CFLAGS="$QEMU_CFLAGS -I\$(SRC_PATH)/block/libchdr/include"
+
+##########################################
 # libxml2 probe
 if test "$libxml2" != "no" ; then
     if $pkg_config --exists libxml-2.0; then

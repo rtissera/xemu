@@ -27,6 +27,7 @@
 #include "block/block_int.h"
 #include "qemu/module.h"
 #include "qemu/bswap.h"
+#include <libchdr/chd.h>
 
 /* Maximum compressed block size */
 #define MAX_BLOCK_SIZE (64 * 1024 * 1024)
@@ -40,6 +41,7 @@ typedef struct BDRVCHDState {
     uint32_t current_block;
     uint8_t *compressed_block;
     uint8_t *uncompressed_block;
+    chd_file *chd;
 } BDRVCHDState;
 
 static int chd_probe(const uint8_t *buf, int buf_size, const char *filename)
@@ -59,7 +61,7 @@ static int chd_probe(const uint8_t *buf, int buf_size, const char *filename)
     return 0;
 }
 
-static int chd_open(BlockDriverState *bs, QDict *options, int flags,
+static int chd_openfile(BlockDriverState *bs, QDict *options, int flags,
                       Error **errp)
 {
     BDRVCHDState *s = bs->opaque;
@@ -287,23 +289,24 @@ fail:
     return ret;
 }
 
-static void chd_close(BlockDriverState *bs)
+static void chd_closefile(BlockDriverState *bs)
 {
     BDRVCHDState *s = bs->opaque;
     g_free(s->offsets);
     g_free(s->compressed_block);
     g_free(s->uncompressed_block);
+    chd_close(s->chd);
 }
 
 static BlockDriver bdrv_chd = {
     .format_name    = "chd",
     .instance_size  = sizeof(BDRVCHDState),
     .bdrv_probe     = chd_probe,
-    .bdrv_open      = chd_open,
+    .bdrv_open      = chd_openfile,
     .bdrv_child_perm     = bdrv_default_perms,
     .bdrv_refresh_limits = chd_refresh_limits,
     .bdrv_co_preadv = chd_co_preadv,
-    .bdrv_close     = chd_close,
+    .bdrv_close     = chd_closefile,
     .is_format      = true,
 };
 
