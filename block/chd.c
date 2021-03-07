@@ -255,7 +255,6 @@ chd_co_preadv(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
                 QEMUIOVector *qiov, int flags)
 {
     BDRVCHDState *s = bs->opaque;
-#if 0
     uint64_t sector_num = offset >> BDRV_SECTOR_BITS;
     int nb_sectors = bytes >> BDRV_SECTOR_BITS;
     int ret, i;
@@ -265,6 +264,7 @@ chd_co_preadv(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
 
     qemu_co_mutex_lock(&s->lock);
 
+#if 0
     for (i = 0; i < nb_sectors; i++) {
         void *data;
         uint32_t sector_offset_in_block =
@@ -278,9 +278,9 @@ chd_co_preadv(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
         data = s->uncompressed_block + sector_offset_in_block * 512;
         qemu_iovec_from_buf(qiov, i * 512, data, 512);
     }
-#end
+#endif
 
-    ret = 0;
+    ret = -EIO;
 fail:
     qemu_co_mutex_unlock(&s->lock);
 
