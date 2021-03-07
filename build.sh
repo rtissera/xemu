@@ -245,6 +245,7 @@ set -x # Print commands from now on
     --disable-hax \
     --disable-hvf \
     --disable-whpx \
+    --enable-chd \
     "$@"
 
 # Force imgui update now to work around annoying make issue
