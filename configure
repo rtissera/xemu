@@ -507,7 +507,7 @@ jemalloc="no"
 replication="yes"
 bochs="yes"
 cloop="yes"
-chd="yes"
+chd="no"
 dmg="yes"
 qcow1="yes"
 vdi="yes"
@@ -4582,7 +4582,15 @@ fi
 
 ##########################################
 # libchdr includes
-QEMU_CFLAGS="$QEMU_CFLAGS -I\$(SRC_PATH)/block/libchdr/include"
+if $pkg_config --exists libchdr; then
+    QEMU_CFLAGS="$QEMU_CFLAGS $($pkg_config --cflags libchdr)"
+    LIBS="$LIBS $($pkg_config --libs libchdr)"
+else
+    if test "$chd" = "yes"; then
+        feature_not_found "chdr" "Install libchdr"
+    fi
+    chd="no"
+fi
 
 ##########################################
 # libxml2 probe
