@@ -507,6 +507,7 @@ jemalloc="no"
 replication="yes"
 bochs="yes"
 cloop="yes"
+chd="yes"
 dmg="yes"
 qcow1="yes"
 vdi="yes"
@@ -1556,6 +1557,10 @@ for opt do
   ;;
   --enable-cloop) cloop="yes"
   ;;
+  --disable-chd) chd="no"
+  ;;
+  --enable-chd) chd="yes"
+  ;;
   --disable-dmg) dmg="no"
   ;;
   --enable-dmg) dmg="yes"
@@ -1937,6 +1942,7 @@ disabled with --disable-FEATURE, default is enabled if available:
   tools           build qemu-io, qemu-nbd and qemu-img tools
   bochs           bochs image format support
   cloop           cloop image format support
+  chd             chd image format support
   dmg             dmg image format support
   qcow1           qcow v1 image format support
   vdi             vdi image format support
@@ -7088,6 +7094,7 @@ echo "avx512f optimization $avx512f_opt"
 echo "replication support $replication"
 echo "bochs support     $bochs"
 echo "cloop support     $cloop"
+echo "chd support       $chd"
 echo "dmg support       $dmg"
 echo "qcow v1 support   $qcow1"
 echo "vdi support       $vdi"
@@ -7949,6 +7956,9 @@ if test "$bochs" = "yes" ; then
 fi
 if test "$cloop" = "yes" ; then
   echo "CONFIG_CLOOP=y" >> $config_host_mak
+fi
+if test "$chd" = "yes" ; then
+  echo "CONFIG_CHD=y" >> $config_host_mak
 fi
 if test "$dmg" = "yes" ; then
   echo "CONFIG_DMG=y" >> $config_host_mak
