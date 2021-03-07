@@ -70,7 +70,7 @@
 	path = hw/xbox/nv2a/xxHash
 	url = https://github.com/Cyan4973/xxHash.git
 	ignore = untracked
-[submodule "block/libchdr"]
+[submodule "libchdr"]
 	path = block/libchdr
-	url = https://github.com/rtissera/libchdr.git
+	url = https://github.com/rtissera/libchdr
 	ignore = untracked
